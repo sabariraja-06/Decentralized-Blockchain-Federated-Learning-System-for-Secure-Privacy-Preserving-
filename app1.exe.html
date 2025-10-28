@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Federated Intelligence Command Center</title>
+    <!-- Inter Font --><link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=apple-system" rel="stylesheet">
+    <!-- Load Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Professional Icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* --- PREMIUM NEUMORPHIC THEME --- */
+        :root {
+            /* Base Colors (Light, Sculpted Background) */
+            --bg-primary: #f2f5f9; /* Bright, soft grey base */
+            --bg-card: #f2f5f9;    /* Card background, matches primary */
+            --text-primary: #34495e; /* Darker text for readability */
+            --text-secondary: #7f8c8d; /* Muted text */
+
+            /* Accent Colors */
+            --accent-blue: #3498db; /* Primary Blue */
+            --accent-teal: #1abc9c; /* Data Flow/Accuracy */
+            --accent-green: #2ecc71; /* Success/Incentive */
+            --accent-red: #e74c3c; /* Loss/Error */
+            --accent-orange: #f39c12; /* Warning */
+            --accent-pink: #e84393; /* Health */
+            
+            /* Neuromorphic Shadows (Increased Intensity for Sculpting) */
+            --shadow-light: #ffffff; 
+            --shadow-dark: #b0b0b0; 
+            --shadow-intensity: 8px; 
+            --shadow-blur: 16px;     
+
+            /* New Dark Accent Color for Central Visualization Panel */
+            --dark-accent-card: #34495e; 
+
+            --transition-ease: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: var(--transition-ease);
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+        
+        /* Ensure Main Content uses the full screen width allowed by body container */
+        .main-container {
+            width: 100%;
+            max-width: 1400px; 
+        }
+
+        /* Base Neuromorphic Card Style */
+        .card {
+            background-color: var(--bg-card);
+            border-radius: 24px; 
+            padding: 1.5rem;
+            box-shadow: 
+                var(--shadow-intensity) var(--shadow-intensity) var(--shadow-blur) var(--shadow-dark),
+                calc(var(--shadow-intensity) * -1) calc(var(--shadow-intensity) * -1) var(--shadow-blur) var(--shadow-light);
+            transition: var(--transition-ease);
+            margin-bottom: 1.5rem; 
+        }
+
+        /* Inset Neuromorphic Style for interactive elements (buttons, inputs) */
+        .inset-neumorphic {
+            background-color: var(--bg-card);
+            border-radius: 18px; 
+            box-shadow: 
+                inset 4px 4px 8px var(--shadow-dark),
+                inset -4px -4px 8px var(--shadow-light);
+            transition: var(--transition-ease);
+            color: var(--text-primary);
+        }
+        
+        /* --- Buttons & Interactions --- */
+        button {
+            background-color: var(--bg-card); 
+            color: var(--text-primary);
+            border-radius: 18px;
+            padding: 0.75rem 1.25rem;
+            font-weight: 600;
+            box-shadow: 
+                var(--shadow-intensity) var(--shadow-intensity) var(--shadow-blur) var(--shadow-dark),
+                calc(var(--shadow-intensity) * -1) calc(var(--shadow-intensity) * -1) var(--shadow-blur) var(--shadow-light);
+            transition: var(--transition-ease);
+            cursor: pointer;
+            border: none; 
+        }
+
+        button:hover {
+            box-shadow: 
+                calc(var(--shadow-intensity) * 0.4) calc(var(--shadow-intensity) * 0.4) calc(var(--shadow-blur) * 0.7) var(--shadow-dark),
+                calc(var(--shadow-intensity) * -0.4) calc(var(--shadow-intensity) * -0.4) calc(var(--shadow-blur) * 0.7) var(--shadow-light);
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            box-shadow: 
+                inset 4px 4px 8px var(--shadow-dark),
+                inset -4px -4px 8px var(--shadow-light);
+            transform: translateY(1px); 
+        }
+
+        /* Primary Action Buttons (Green Accent) */
+        .primary-btn {
+            background: linear-gradient(145deg, var(--accent-green), #27ae60); 
+            color: white; 
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+            box-shadow: 
+                var(--shadow-intensity) var(--shadow-intensity) var(--shadow-blur) var(--shadow-dark),
+                calc(var(--shadow-intensity) * -1) calc(var(--shadow-intensity) * -1) var(--shadow-blur) var(--shadow-light),
+                5px 5px 15px rgba(46, 204, 113, 0.4); 
+        }
+        .primary-btn:active {
+            background: linear-gradient(145deg, #27ae60, var(--accent-green)); 
+            box-shadow: 
+                inset 3px 3px 6px #249a56,
+                inset -3px -3px 6px #34e08c;
+        }
+
+        /* Dark Contrast Panel Style (for the Visualization block) */
+        .dark-contrast-card {
+            background: linear-gradient(145deg, #304153, var(--dark-accent-card)); /* Subtle gradient */
+            color: white; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5), 0 0 20px rgba(52, 152, 219, 0.5); /* Stronger glow/shadow */
+        }
+        .dark-contrast-card h2, .dark-contrast-card h3, .dark-contrast-card .text-gray-500 {
+            color: white !important; 
+        }
+        .dark-contrast-card .font-extrabold {
+            color: var(--accent-teal) !important; 
+        }
+        
+        /* --- Metrics, Lines, and Graphing --- */
+        .metric-card {
+            position: relative;
+            /* Added Subtle Inner Shadow for Polish */
+            box-shadow: 
+                var(--shadow-intensity) var(--shadow-intensity) var(--shadow-blur) var(--shadow-dark),
+                calc(var(--shadow-intensity) * -1) calc(var(--shadow-intensity) * -1) var(--shadow-blur) var(--shadow-light),
+                inset 1px 1px 2px rgba(255, 255, 255, 0.5); /* Inner highlight */
+        }
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 5px; 
+            background: linear-gradient(to bottom, var(--card-accent-color-start), var(--card-accent-color-end));
+            border-radius: 24px 0 0 24px; 
+        }
+        
+        /* Network Line (Data Flow) - UPGRADED */
+        .network-line {
+            stroke: var(--accent-teal);
+            stroke-width: 2.5; 
+            stroke-dasharray: 10, 10; /* Dashed line for data packets */
+            transform-origin: center;
+            animation: 
+                flash-teal 1s infinite alternate, 
+                flow-animation 5s linear infinite; /* New flow animation */
+            filter: drop-shadow(0 0 3px var(--accent-teal)); 
+        }
+
+        /* Animation for Data Flow (simulating movement along the line) */
+        @keyframes flow-animation {
+            to { stroke-dashoffset: -20; }
+        }
+
+        @keyframes flash-teal {
+            0%, 100% { stroke-opacity: 0.7; }
+            50% { stroke-opacity: 1; filter: drop-shadow(0 0 5px var(--accent-teal)); }
+        }
+        
+        /* Client Node Pulse */
+        @keyframes node-pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.15); opacity: 0.9; } /* More pronounced pulse */
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .client-node-group {
+            animation: node-pulse 3s ease-in-out infinite;
+        }
+        
+        /* --- Network Topology Tiered Rings --- */
+        @keyframes ring-pulse {
+            0% { transform: scale(1); opacity: 0.1; }
+            50% { transform: scale(1.2); opacity: 0.3; }
+            100% { transform: scale(1); opacity: 0.1; }
+        }
+
+        .animated-ring {
+            animation: ring-pulse 6s ease-out infinite;
+            transform-origin: center;
+        }
+
+        @keyframes flash-green {
+            0% { background-color: var(--bg-card); }
+            50% { background-color: var(--accent-green); opacity: 0.1; }
+            100% { background-color: var(--bg-card); }
+        }
+        .blockchain-entry {
+            transition: var(--transition-ease);
+            border-radius: 12px; 
+        }
+
+        /* Text Adjustments */
+        .border-dashed {
+            border-color: rgba(127, 140, 141, 0.3);
+        }
+        .text-gray-500 { color: var(--text-secondary); }
+        
+        /* Modal styles */
+        .modal {
+            background-color: rgba(0, 0, 0, 0.5);
+            transition: opacity 0.3s ease;
+        }
+        
+        /* Active tab styling */
+        .active-tab {
+            background: linear-gradient(145deg, var(--accent-blue), #2980b9);
+            color: white;
+            box-shadow: 
+                inset 3px 3px 6px rgba(0,0,0,0.2),
+                inset -3px -3px 6px rgba(255,255,255,0.2);
+        }
+        
+        /* Color classes for data points */
+        .temp-color { color: var(--accent-red); }
+        .temp-bg-color { background-color: var(--accent-red); }
+        .vib-color { color: var(--accent-orange); }
+        .vib-bg-color { background-color: var(--accent-orange); }
+        .hr-color { color: var(--accent-pink); }
+        .hr-bg-color { background-color: var(--accent-pink); }
+        
+        /* Blockchain flash animation */
+        .blockchain-flash {
+            animation: flash-green 0.5s ease;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <!-- Main Content Wrapper (Desktop View) -->
+    <div class="main-container">
+
+        <!-- Main Header --><header class="flex justify-between items-center mb-8 p-4 card sticky top-0 z-10 border-t-4 border-[var(--accent-blue)]">
+            <h1 class="text-2xl md:text-3xl font-extrabold text-[var(--accent-blue)] flex items-center space-x-2">
+                <i class="fas fa-layer-group text-xl"></i> <span>Federated Intelligence Command Center</span>
+            </h1>
+            <div class="flex items-center space-x-4">
+                <button id="download-data-btn" class="px-4 py-2 font-medium">
+                    <i class="fas fa-file-export mr-1"></i> Data Export
+                </button>
+                <button id="contribute-data-btn" class="px-6 py-2 font-bold primary-btn">
+                    <i class="fas fa-microchip mr-2"></i> Submit Local Gradient
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Layout Grid (4 Column Structure) --><main class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+
+            <!-- Left Column (Col 1) --><div class="space-y-8 lg:col-span-1">
+                <!-- Use Case Configuration --><div class="card">
+                    <h2 class="text-xl font-bold mb-4 border-b pb-2 border-dashed text-[var(--text-primary)]">FL Task Manager</h2>
+                    <div id="use-case-tabs" class="flex flex-col space-y-3">
+                        <!-- Tabs will be rendered here by JS --></div>
+                    <div id="current-task-description" class="mt-4 p-3 inset-neumorphic text-sm text-gray-600"></div>
+                </div>
+
+                <!-- Live IoT Data Feed --><div class="card">
+                    <h2 class="text-xl font-bold mb-4">Live IoT Data Stream</h2>
+                    <div id="live-data-feed" class="grid grid-cols-1 gap-3">
+                        <!-- Data points will be rendered here by JS --></div>
+                </div>
+
+                <!-- Incentive/Reputation Tracker --><div class="card">
+                    <h2 class="text-xl font-bold mb-4 border-b pb-2 border-dashed">Node Incentives & Trust</h2>
+                    <div class="flex flex-col space-y-4">
+                        <div class="p-3 rounded-lg inset-neumorphic">
+                            <span class="text-sm font-medium text-gray-500">Current Token Reward</span>
+                            <span id="token-reward" class="block text-3xl font-extrabold text-[var(--accent-green)] transition-all duration-300">15.42 TKN</span>
+                        </div>
+                        <div class="p-3 rounded-lg inset-neumorphic">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm font-medium text-gray-500">Reputation Score (0-100)</span>
+                                <span id="reputation-score" class="text-xl font-bold text-[var(--accent-blue)] transition-all duration-300">78</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5 inset-neumorphic !shadow-none">
+                                <div id="reputation-progress" class="bg-[var(--accent-blue)] h-2.5 rounded-full transition-all duration-500" style="width: 78%"></div>
+                            </div>
+                            <p class="text-[10px] text-gray-400 mt-1">Trust is derived from gradient quality and contribution frequency.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center Column (Cols 2-3) - DARK CONTRAST FOCAL POINT --><div class="space-y-8 lg:col-span-2">
+                <!-- Global Metrics Dashboard --><div class="grid grid-cols-3 gap-4">
+                    <!-- Metric 1: Global Accuracy --><div class="p-4 card metric-card metric-teal">
+                        <h3 class="text-sm font-medium text-gray-500 flex justify-between items-center">
+                            Global Model Accuracy (%)
+                            <span id="tooltip-acc" class="cursor-pointer text-gray-400 hover:text-[var(--accent-blue)] text-sm">ⓘ</span>
+                        </h3>
+                        <div id="global-accuracy" class="text-4xl font-extrabold text-[var(--accent-teal)] mt-1 transition-all">89.4%</div>
+                    </div>
+                    <!-- Metric 2: Local Loss --><div class="p-4 card metric-card metric-red">
+                        <h3 class="text-sm font-medium text-gray-500 flex justify-between items-center">
+                            Local Loss (Gradient Quality)
+                            <span id="tooltip-loss" class="cursor-pointer text-gray-400 hover:text-[var(--accent-blue)] text-sm">ⓘ</span>
+                        </h3>
+                        <div id="local-loss" class="text-4xl font-extrabold text-[var(--accent-red)] mt-1 transition-all">0.123</div>
+                    </div>
+                    <!-- Metric 3: Active Nodes --><div class="p-4 card metric-card metric-blue">
+                        <h3 class="text-sm font-medium text-gray-500 flex justify-between items-center">
+                            Active / Total Training Nodes
+                            <span id="tooltip-nodes" class="cursor-pointer text-gray-400 hover:text-[var(--accent-blue)] text-sm">ⓘ</span>
+                        </h3>
+                        <div class="flex items-end space-x-1 mt-1">
+                            <div id="active-nodes" class="text-4xl font-extrabold text-[var(--accent-blue)] transition-all">7</div>
+                            <div id="total-nodes" class="text-xl font-medium text-gray-500">/ 10,245</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dynamic Network Graph (Central Visualization) --><div class="card h-[450px] flex flex-col justify-center items-center dark-contrast-card">
+                    <h2 class="text-xl font-bold mb-4">FL Network Topology <span class="text-sm">(Encrypted Gradient Flow)</span></h2>
+                    <div class="w-full h-full relative" onclick="showTooltip('graph')">
+                        <svg id="network-graph" viewBox="0 0 500 300" class="w-full h-full cursor-pointer">
+                            <!-- Aggregator Node and Clients rendered by JS --></svg>
+                    </div>
+                </div>
+
+                <!-- Global Model Convergence Chart --><div class="card dark-contrast-card">
+                    <h2 class="text-xl font-bold mb-4">Global Model Convergence (Accuracy over Rounds)</h2>
+                    <canvas id="convergence-chart" class="w-full h-64"></canvas>
+                </div>
+            </div>
+
+            <!-- Right Column (Col 4) --><div class="space-y-8 lg:col-span-1">
+                <!-- Blockchain Explorer Simulation --><div class="card">
+                    <h2 class="text-xl font-bold mb-4 border-b pb-2 border-dashed">Blockchain Security Log</h2>
+                    <div class="h-[600px] overflow-y-scroll space-y-1 text-xs" id="blockchain-log">
+                        <!-- Log entries will be inserted here by JS --></div>
+                    <div class="text-center mt-4">
+                        <button class="text-[var(--accent-blue)] font-medium hover:text-blue-700 text-sm">
+                            Audit Full Chain History <i class="fas fa-external-link-alt ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals (Outside Main Container) -->
+    <div id="contribution-modal" class="modal fixed inset-0 z-50 flex items-center justify-center opacity-0 pointer-events-none">
+        <div class="card p-8 w-full max-w-lg transform transition-all duration-300 translate-y-12">
+            <h2 class="text-2xl font-bold mb-6 text-[var(--accent-blue)]">Simulate Device Data Input</h2>
+            <p class="text-sm text-gray-500 mb-6">Adjust your local IoT device readings to generate an encrypted model update.</p>
+
+            <div class="space-y-6">
+                <!-- Temperature --><div class="p-4 rounded-lg inset-neumorphic">
+                    <label for="temp-slider" class="block text-lg font-medium mb-2 flex justify-between items-center">
+                        <span class="flex items-center temp-color"><i class="fas fa-temperature-high mr-2"></i> Temperature</span>
+                        <span id="temp-value" class="font-bold text-xl temp-color">55</span> °C
+                    </label>
+                    <input type="range" id="temp-slider" min="10" max="100" value="55" class="w-full h-2 rounded-lg appearance-none cursor-pointer">
+                </div>
+
+                <!-- Vibration --><div class="p-4 rounded-lg inset-neumorphic">
+                    <label for="vib-slider" class="block text-lg font-medium mb-2 flex justify-between items-center">
+                        <span class="flex items-center vib-color"><i class="fas fa-wind mr-2"></i> Vibration Level</span>
+                        <span id="vib-value" class="font-bold text-xl vib-color">25</span> mm/s
+                    </label>
+                    <input type="range" id="vib-slider" min="0" max="50" value="25" class="w-full h-2 rounded-lg appearance-none cursor-pointer">
+                </div>
+
+                <!-- Heart Rate --><div class="p-4 rounded-lg inset-neumorphic">
+                    <label for="hr-slider" class="block text-lg font-medium mb-2 flex justify-between items-center">
+                        <span class="flex items-center hr-color"><i class="fas fa-heart-pulse mr-2"></i> Heart Rate</span>
+                        <span id="hr-value" class="font-bold text-xl hr-color">110</span> bpm
+                    </label>
+                    <input type="range" id="hr-slider" min="40" max="180" value="110" class="w-full h-2 rounded-lg appearance-none cursor-pointer">
+                </div>
+            </div>
+
+            <div class="flex justify-end space-x-3 mt-8">
+                <button id="close-modal-btn" class="px-6 py-2">Cancel</button>
+                <button id="submit-contribution-btn" class="px-6 py-2 primary-btn" style="background: linear-gradient(145deg, var(--accent-green), #27ae60);">
+                    Secure Update <i class="fas fa-shield-halved ml-1"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="download-modal" class="modal fixed inset-0 z-50 flex items-center justify-center opacity-0 pointer-events-none">
+        <div class="card p-8 w-full max-w-md transform transition-all duration-300 translate-y-12">
+            <h2 class="text-2xl font-bold mb-6">Data Export Configuration</h2>
+            <p class="text-sm text-gray-500 mb-6">Select the desired format for the aggregated simulation logs and model metrics.</p>
+
+            <div class="space-y-4">
+                <button onclick="downloadData('CSV')" class="w-full py-3 text-left px-4 rounded-lg font-medium transition-colors flex items-center inset-neumorphic hover:scale-[0.98]">
+                    <i class="fas fa-file-csv text-green-600 mr-3"></i><span class="font-mono text-sm mr-2">[CSV]</span> - Raw Metrics (Spreadsheet Ready)
+                </button>
+                <button onclick="downloadData('JSON')" class="w-full py-3 text-left px-4 rounded-lg font-medium transition-colors flex items-center inset-neumorphic hover:scale-[0.98]">
+                    <i class="fas fa-file-code text-blue-600 mr-3"></i><span class="font-mono text-sm mr-2">[JSON]</span> - Structured Data Output
+                </button>
+                <button onclick="downloadData('TXT')" class="w-full py-3 text-left px-4 rounded-lg font-medium transition-colors flex items-center inset-neumorphic hover:scale-[0.98]">
+                    <i class="fas fa-file-alt text-purple-600 mr-3"></i><span class="font-mono text-sm mr-2">[TXT]</span> - Formatted Summary Report
+                </button>
+            </div>
+
+            <div class="flex justify-end mt-8">
+                <button onclick="closeModal('download-modal')" class="px-6 py-2">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="tooltip-modal" class="modal fixed inset-0 z-40 flex items-center justify-center opacity-0 pointer-events-none">
+        <div class="card p-6 w-full max-w-md transform transition-all duration-300 scale-90">
+            <h3 id="tooltip-title" class="text-xl font-bold mb-3 text-[var(--accent-blue)]"></h3>
+            <p id="tooltip-content" class="text-base"></p>
+            <div class="flex justify-end mt-4">
+                <button onclick="closeModal('tooltip-modal')" class="px-4 py-1 primary-btn">Got It</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global State Variables
+        let currentUseCase = 'PM'; // PM, AD, PH
+        let globalAccuracy = 75.0;
+        let localLoss = 0.500;
+        let flRound = 1;
+        let tokenReward = 10.00;
+        let reputationScore = 78; // Initial reputation
+        const totalNodes = 10245;
+        let activeNodes = 7;
+        let isDarkMode = false; 
+        let convergenceData = [{ round: 0, accuracy: 75.0 }];
+        const maxConvergencePoints = 20;
+
+        // Live Data Simulation State
+        let liveData = {
+            temp: 55.0,
+            vib: 25.0,
+            hr: 110
+        };
+
+        // Configuration for use cases (using Font Awesome icons)
+        const useCaseConfig = {
+            'PM': { name: 'Predictive Maintenance', description: 'Monitoring motor health and detecting equipment degradation early.', icon: 'fas fa-cogs', color: 'text-red-500' },
+            'AD': { name: 'Anomaly Detection', description: 'Identifying sudden, unusual spikes in critical sensor readings (e.g., security breach).', icon: 'fas fa-exclamation-circle', color: 'text-orange-500' },
+            'PH': { name: 'Personalized Health', description: 'Tracking biometrics (heart rate, movement) for user-specific insights and model training.', icon: 'fas fa-stethoscope', color: 'text-pink-500' },
+        };
+
+        const tooltipContent = {
+            'acc': { title: 'Global Model Accuracy (%)', content: 'The overall performance benchmark of the federated model. This value reflects the collective improvement delivered by all contributing nodes.' },
+            'loss': { title: 'Local Model Loss', content: 'This score represents the error rate of your local model against your private data. A lower loss value means your node provides a high-quality, valuable encrypted gradient.' },
+            'nodes': { title: 'Active Training Nodes', content: 'The number of IoT devices currently participating in the active Federated Learning round. This reflects the dynamic and scalable nature of the decentralized network.' },
+            'graph': { title: 'Dynamic FL Network Graph', content: 'Visualization of the secure FL aggregation process. Client nodes securely share encrypted gradients (flashing lines) with the central Aggregator, which verifies and aggregates them using the blockchain.' },
+        };
+        
+        // --- Utility Functions ---
+        function generateHash() {
+            return '0x' + Math.random().toString(16).substr(2, 4).toUpperCase() + '...' + Math.random().toString(16).substr(2, 4).toUpperCase();
+        }
+
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.querySelector('.card').classList.remove('translate-y-12', 'scale-90');
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            modal.querySelector('.card').classList.add('translate-y-12', 'scale-90');
+            setTimeout(() => {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+            }, 300);
+        }
+
+        function showTooltip(key) {
+            document.getElementById('tooltip-title').textContent = tooltipContent[key].title;
+            document.getElementById('tooltip-content').textContent = tooltipContent[key].content;
+            openModal('tooltip-modal');
+        }
+
+        function varToString(cssVar) {
+            const style = getComputedStyle(document.documentElement);
+            return style.getPropertyValue(cssVar).trim();
+        }
+
+        // --- UI Rendering Functions ---
+
+        function updateBlockchainLog(type) {
+            const logElement = document.getElementById('blockchain-log');
+            const timestamp = new Date().toLocaleTimeString();
+            const blockId = flRound * 1000 + logElement.children.length + 1;
+            const hash = generateHash();
+            const typeClass = (type === "Incentive Paid" || type === "Model Update Verified") ? 'text-[var(--accent-green)]' : 'text-[var(--accent-teal)]';
+
+            const newEntry = document.createElement('div');
+            newEntry.className = `p-2 flex items-center blockchain-entry space-x-2 inset-neumorphic !shadow-none`; /* Using inset for log entries */
+
+            newEntry.innerHTML = `
+                <i class="fas fa-cube text-[var(--text-secondary)]"></i>
+                <div class="flex-shrink-0 text-[var(--text-secondary)] font-mono text-[10px] w-14">${timestamp}</div>
+                <div class="flex-grow font-mono text-[10px] text-[var(--text-primary)] truncate">${hash}</div>
+                <div class="flex-shrink-0 font-medium ${typeClass} text-[10px] uppercase">${type}</div>
+            `;
+            logElement.prepend(newEntry);
+            newEntry.classList.add('blockchain-flash');
+            setTimeout(() => newEntry.classList.remove('blockchain-flash'), 500);
+
+            // Keep log tidy
+            if (logElement.children.length > 50) {
+                logElement.removeChild(logElement.lastChild);
+            }
+        }
+
+        function renderMetrics() {
+            // Main Metrics
+            document.getElementById('global-accuracy').textContent = `${globalAccuracy.toFixed(1)}%`;
+            document.getElementById('local-loss').textContent = localLoss.toFixed(3);
+            document.getElementById('active-nodes').textContent = activeNodes;
+            document.getElementById('token-reward').textContent = `${tokenReward.toFixed(2)} TKN`;
+
+            // Reputation Score and Progress Bar
+            document.getElementById('reputation-score').textContent = reputationScore;
+            document.getElementById('reputation-progress').style.width = `${reputationScore}%`;
+
+            // Use Case Description
+            const config = useCaseConfig[currentUseCase];
+            document.getElementById('current-task-description').innerHTML = `
+                <p class="font-bold text-[var(--text-primary)] flex items-center"><i class="${config.icon} mr-2" style="color:${varToString(`--accent-${config.color.split('-')[1]}`)}"></i> ${config.name}</p> 
+                <p class="mt-1">${config.description}</p>
+            `;
+        }
+
+        function renderLiveDataFeed() {
+            const feedContainer = document.getElementById('live-data-feed');
+            feedContainer.innerHTML = '';
+
+            const dataPoints = [
+                { label: 'Temp', value: liveData.temp.toFixed(1), unit: '°C', max: 100, colorClass: 'temp-color', bgColorClass: 'temp-bg-color', icon: 'fas fa-fire' },
+                { label: 'Vibration', value: liveData.vib.toFixed(1), unit: 'mm/s', max: 50, colorClass: 'vib-color', bgColorClass: 'vib-bg-color', icon: 'fas fa-chart-line' },
+                { label: 'HR', value: liveData.hr.toFixed(0), unit: 'bpm', max: 180, colorClass: 'hr-color', bgColorClass: 'hr-bg-color', icon: 'fas fa-heart-pulse' },
+            ];
+
+            dataPoints.forEach(data => {
+                const ratio = Math.min(100, (data.value / data.max) * 100);
+                const element = document.createElement('div');
+                element.className = 'p-3 card inset-neumorphic !shadow-none hover:shadow-md transition-all'; /* Using inset for live data */
+
+                element.innerHTML = `
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-sm font-medium flex items-center ${data.colorClass}"><i class="${data.icon} mr-2 text-xl"></i> ${data.label}</span>
+                        <span class="text-2xl font-extrabold ${data.colorClass}">${data.value}</span>
+                    </div>
+                    <div class="w-full bg-[var(--bg-primary)] rounded-full h-1 inset-neumorphic !shadow-none">
+                        <div class="${data.bgColorClass} h-1 rounded-full" style="width: ${ratio}%"></div>
+                    </div>
+                    <span class="text-[10px] text-gray-400 mt-1 block text-right">${data.unit} (Max ${data.max})</span>
+                `;
+                feedContainer.appendChild(element);
+            });
+        }
+
+        function renderConvergenceChart() {
+            const canvas = document.getElementById('convergence-chart');
+            const ctx = canvas.getContext('2d');
+            const isDark = canvas.closest('.dark-contrast-card') !== null;
+            
+            const DENSITY = 2;
+            canvas.width = canvas.offsetWidth * DENSITY;
+            canvas.height = canvas.offsetHeight * DENSITY;
+            canvas.style.width = canvas.offsetWidth + 'px';
+            canvas.style.height = canvas.offsetHeight + 'px';
+            ctx.scale(DENSITY, DENSITY);
+
+            const W = canvas.offsetWidth;
+            const H = canvas.offsetHeight;
+            const PADDING = 35;
+            const CHART_W = W - PADDING * 2;
+            const CHART_H = H - PADDING * 2;
+
+            // Clear Canvas
+            ctx.clearRect(0, 0, W, H);
+
+            // Chart Styling
+            const lineColor = varToString('--accent-teal');
+            const pointColor = varToString('--accent-green');
+            const axisColor = isDark ? 'rgba(255, 255, 255, 0.4)' : varToString('--text-secondary'); 
+            const textColor = isDark ? 'white' : varToString('--text-primary');
+
+            // Draw Grid Lines (Horizontal)
+            ctx.strokeStyle = axisColor;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            const minAcc = 70;
+            const maxAcc = 100;
+            const step = 5; 
+            const numSteps = (maxAcc - minAcc) / step;
+
+            for (let i = 0; i <= numSteps; i++) {
+                const y = PADDING + CHART_H - (CHART_H * (i * step) / (maxAcc - minAcc));
+                ctx.moveTo(PADDING, y);
+                ctx.lineTo(W - PADDING, y);
+                
+                // Y-Axis Labels
+                ctx.fillStyle = textColor;
+                ctx.font = '10px Inter';
+                ctx.fillText(`${minAcc + i * step}%`, PADDING - 30, y + 3);
+            }
+            ctx.stroke();
+
+
+            // Draw Axes
+            ctx.strokeStyle = axisColor;
+            ctx.beginPath();
+            ctx.moveTo(PADDING, PADDING);
+            ctx.lineTo(PADDING, H - PADDING);
+            ctx.lineTo(W - PADDING, H - PADDING);
+            ctx.stroke();
+
+            // Draw Data Line
+            ctx.strokeStyle = lineColor;
+            ctx.lineWidth = 3;
+            ctx.lineJoin = 'round';
+            ctx.beginPath();
+
+            convergenceData.forEach((point, i) => {
+                const x = PADDING + (CHART_W / (maxConvergencePoints - 1)) * i;
+                const scaledAcc = Math.min(Math.max(point.accuracy, minAcc), maxAcc);
+                const yRatio = (scaledAcc - minAcc) / (maxAcc - minAcc);
+                const y = H - PADDING - (CHART_H * yRatio);
+
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            });
+            ctx.stroke();
+
+            // Draw Points (Done in a separate loop for layering)
+            convergenceData.forEach((point, i) => {
+                const x = PADDING + (CHART_W / (maxConvergencePoints - 1)) * i; // FIX: Corrected typo PADDING from PPADDING
+                const scaledAcc = Math.min(Math.max(point.accuracy, minAcc), maxAcc);
+                const yRatio = (scaledAcc - minAcc) / (maxAcc - minAcc);
+                const y = H - PADDING - (CHART_H * yRatio);
+                
+                ctx.fillStyle = i === convergenceData.length - 1 ? pointColor : lineColor;
+                ctx.beginPath();
+                ctx.arc(x, y, 4, 0, Math.PI * 2);
+                ctx.fill();
+
+                // X-Axis Labels (Every 5th round)
+                if (i % 5 === 0) {
+                    ctx.fillStyle = textColor;
+                    ctx.font = '10px Inter';
+                    ctx.fillText(`R${point.round}`, x - 10, H - PADDING + 15);
+                }
+            });
+        }
+
+        function renderNetworkGraph() {
+            const svg = document.getElementById('network-graph');
+            const R_OUTER = 140; 
+            const R_CENTER_X = 250;
+            const R_CENTER_Y = 150;
+            const NUM_NODES = 10;
+            svg.innerHTML = ''; 
+            
+            // Determine colors for dark mode visualization
+            const ringColor = 'rgba(255, 255, 255, 0.1)'; 
+            const nodeFillColor = 'rgba(255, 255, 255, 0.1)';
+            const nodeStrokeColor = varToString('--accent-teal');
+            const iconFillColor = 'white';
+            
+            // --- 1. Background Rings (Visual Enhancement) ---
+            
+            // Animated Ring 1 (Inner)
+            const ring1 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            ring1.setAttribute('cx', R_CENTER_X);
+            ring1.setAttribute('cy', R_CENTER_Y);
+            ring1.setAttribute('r', R_OUTER * 0.5); 
+            ring1.setAttribute('fill', 'none');
+            ring1.setAttribute('stroke', ringColor);
+            ring1.setAttribute('stroke-width', '1');
+            ring1.setAttribute('class', 'animated-ring');
+            ring1.style.animationDelay = '0s';
+            svg.appendChild(ring1);
+            
+            // Animated Ring 2 (Outer)
+            const ring2 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            ring2.setAttribute('cx', R_CENTER_X);
+            ring2.setAttribute('cy', R_CENTER_Y);
+            ring2.setAttribute('r', R_OUTER); 
+            ring2.setAttribute('fill', 'none');
+            ring2.setAttribute('stroke', ringColor);
+            ring2.setAttribute('stroke-width', '1.5');
+            ring2.setAttribute('class', 'animated-ring');
+            ring2.style.animationDelay = '-3s'; 
+            svg.appendChild(ring2);
+
+
+            // Draw Client Nodes and Lines
+            for (let i = 0; i < NUM_NODES; i++) {
+                const angle = (i / NUM_NODES) * 2 * Math.PI;
+                const x = R_CENTER_X + R_OUTER * Math.cos(angle);
+                const y = R_CENTER_Y + R_OUTER * Math.sin(angle);
+                
+                // Group element for animated node
+                const nodeGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                nodeGroup.setAttribute('class', 'client-node-group');
+                nodeGroup.style.animationDelay = `${i * 0.2}s`;
+                nodeGroup.setAttribute('transform', `translate(${x}, ${y})`);
+
+                // Line (Encrypted Gradient Sharing)
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', R_CENTER_X);
+                line.setAttribute('y1', R_CENTER_Y);
+                line.setAttribute('x2', x);
+                line.setAttribute('y2', y);
+                line.setAttribute('class', 'network-line');
+                line.style.animationDelay = `${i * 0.1}s`;
+                svg.appendChild(line);
+
+                // Client Node Circle (part of the group)
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('cx', 0);
+                circle.setAttribute('cy', 0);
+                circle.setAttribute('r', 8);
+                circle.setAttribute('fill', nodeFillColor); 
+                circle.setAttribute('stroke', nodeStrokeColor);
+                circle.setAttribute('stroke-width', '2');
+                nodeGroup.appendChild(circle);
+
+                // Client Icon (part of the group)
+                const iconText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                iconText.setAttribute('x', 0);
+                iconText.setAttribute('y', 3);
+                iconText.setAttribute('text-anchor', 'middle');
+                iconText.setAttribute('fill', iconFillColor);
+                iconText.setAttribute('font-size', '10');
+                iconText.textContent = 'IoT'; 
+                nodeGroup.appendChild(iconText);
+                
+                svg.appendChild(nodeGroup);
+            }
+
+            // --- 2. Aggregator Node Enhancement ---
+            
+            // 2a. Aggregator Shadow/Glow (for visual impact)
+            const glow = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            glow.setAttribute('cx', R_CENTER_X);
+            glow.setAttribute('cy', R_CENTER_Y);
+            glow.setAttribute('r', '45');
+            glow.setAttribute('fill', varToString('--accent-blue'));
+            glow.setAttribute('opacity', '0.35'); 
+            glow.style.filter = 'url(#glow)';
+            svg.appendChild(glow);
+
+            // Define glow filter (needed for proper SVG glow effect)
+            const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+            const filter = document.createElementNS('http://www.w3.org/2000/svg', 'filter');
+            filter.setAttribute('id', 'glow');
+            const feGaussianBlur = document.createElementNS('http://www.w3.org/2000/svg', 'feGaussianBlur');
+            feGaussianBlur.setAttribute('stdDeviation', '5');
+            feGaussianBlur.setAttribute('result', 'coloredBlur');
+            filter.appendChild(feGaussianBlur);
+            const feMerge = document.createElementNS('http://www.w3.org/2000/svg', 'feMerge');
+            const feMergeNode1 = document.createElementNS('http://www.w3.org/2000/svg', 'feMergeNode');
+            feMergeNode1.setAttribute('in', 'coloredBlur');
+            const feMergeNode2 = document.createElementNS('http://www.w3.org/2000/svg', 'feMergeNode');
+            feMergeNode2.setAttribute('in', 'SourceGraphic');
+            feMerge.appendChild(feMergeNode1);
+            feMerge.appendChild(feMergeNode2);
+            filter.appendChild(feMerge);
+            defs.appendChild(filter);
+            svg.appendChild(defs);
+
+            // 2b. Aggregator Core Node (Always last to be on top)
+            const aggregator = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            aggregator.setAttribute('id', 'aggregator-node');
+            aggregator.setAttribute('cx', R_CENTER_X);
+            aggregator.setAttribute('cy', R_CENTER_Y);
+            aggregator.setAttribute('r', '30');
+            aggregator.setAttribute('fill', varToString('--accent-blue'));
+            aggregator.setAttribute('class', 'transition-all duration-300');
+            svg.appendChild(aggregator);
+
+            const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            text.setAttribute('x', R_CENTER_X);
+            text.setAttribute('y', R_CENTER_Y + 5);
+            text.setAttribute('text-anchor', 'middle');
+            text.setAttribute('fill', 'white');
+            text.setAttribute('font-size', '12');
+            text.textContent = 'Aggregator';
+            svg.appendChild(text);
+
+            svg.addEventListener('click', () => showTooltip('graph'));
+        }
+
+        // --- Interaction Logic ---
+
+        function handleContribution(temp, vib, hr) {
+            // 1. Simulate Local Model Update Effect
+            const contributionQuality = (temp / 100 * 0.4) + (vib / 50 * 0.3) + (hr / 180 * 0.3);
+            const lossReduction = 0.05 * contributionQuality;
+            localLoss = Math.max(0.1, localLoss - lossReduction + (Math.random() * 0.05 - 0.025));
+
+            // 2. Simulate Blockchain & Incentive Update
+            tokenReward += 0.5 + 5 * contributionQuality; 
+            reputationScore = Math.min(100, reputationScore + Math.floor(4 * contributionQuality));
+
+            updateBlockchainLog("Local Gradient Sent (Encrypted)");
+            updateBlockchainLog("Incentive Paid (Transaction)");
+
+            // 3. Close Modal and Render Updates
+            closeModal('contribution-modal');
+            renderMetrics();
+        }
+
+        function switchUseCase(task) {
+            currentUseCase = task;
+
+            // Update tab styles
+            Object.keys(useCaseConfig).forEach(key => {
+                const tab = document.getElementById(`tab-${key}`);
+                const icon = tab.querySelector('i');
+                const config = useCaseConfig[key];
+
+                if (key === task) {
+                    tab.classList.add('active-tab');
+                    tab.classList.remove(config.color); 
+                } else {
+                    tab.classList.remove('active-tab');
+                    tab.classList.add(config.color);
+                }
+            });
+
+            // Reset/Re-seed simulation metrics for the new use case (for variety)
+            globalAccuracy = 70.0 + Math.random() * 10;
+            localLoss = 0.400 + Math.random() * 0.2;
+            flRound = 1;
+            convergenceData = [{ round: 0, accuracy: globalAccuracy }];
+            renderMetrics();
+            renderConvergenceChart();
+            renderLiveDataFeed(); 
+        }
+
+        // --- Data Export Functions ---
+        
+        function downloadData(format) {
+            const downloadBtn = document.getElementById('download-data-btn');
+            downloadBtn.innerHTML = `<i class="fas fa-check-circle mr-1"></i> Downloaded ${format}`;
+            downloadBtn.classList.add('primary-btn');
+            downloadBtn.style.background = `linear-gradient(145deg, var(--accent-green), #27ae60)`;
+
+            // Generate data based on format
+            let data, filename, mimeType;
+            
+            switch(format) {
+                case 'CSV':
+                    data = generateCSVData();
+                    filename = 'federated_learning_data.csv';
+                    mimeType = 'text/csv';
+                    break;
+                case 'JSON':
+                    data = generateJSONData();
+                    filename = 'federated_learning_data.json';
+                    mimeType = 'application/json';
+                    break;
+                case 'TXT':
+                    data = generateTXTData();
+                    filename = 'federated_learning_summary.txt';
+                    mimeType = 'text/plain';
+                    break;
+            }
+            
+            // Create and trigger download
+            const blob = new Blob([data], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            // Reset button after download
+            setTimeout(() => {
+                downloadBtn.innerHTML = `<i class="fas fa-file-export mr-1"></i> Data Export`;
+                downloadBtn.classList.remove('primary-btn');
+                downloadBtn.style.background = `var(--bg-card)`;
+            }, 1500);
+
+            closeModal('download-modal');
+        }
+
+        function generateCSVData() {
+            let csv = 'Metric,Value,Timestamp\n';
+            csv += `Use Case,${useCaseConfig[currentUseCase].name},${new Date().toISOString()}\n`;
+            csv += `Global Accuracy,${globalAccuracy.toFixed(1)}%,${new Date().toISOString()}\n`;
+            csv += `Local Loss,${localLoss.toFixed(3)},${new Date().toISOString()}\n`;
+            csv += `Active Nodes,${activeNodes},${new Date().toISOString()}\n`;
+            csv += `Total Nodes,${totalNodes},${new Date().toISOString()}\n`;
+            csv += `Token Reward,${tokenReward.toFixed(2)} TKN,${new Date().toISOString()}\n`;
+            csv += `Reputation Score,${reputationScore},${new Date().toISOString()}\n`;
+            csv += `Current Round,${flRound},${new Date().toISOString()}\n`;
+            csv += `Temperature,${liveData.temp.toFixed(1)}°C,${new Date().toISOString()}\n`;
+            csv += `Vibration,${liveData.vib.toFixed(1)}mm/s,${new Date().toISOString()}\n`;
+            csv += `Heart Rate,${liveData.hr.toFixed(0)}bpm,${new Date().toISOString()}\n`;
+            
+            // Add convergence data
+            csv += '\nConvergence Data (Round,Accuracy)\n';
+            convergenceData.forEach(point => {
+                csv += `${point.round},${point.accuracy.toFixed(1)}\n`;
+            });
+            
+            return csv;
+        }
+
+        function generateJSONData() {
+            const data = {
+                useCase: {
+                    id: currentUseCase,
+                    name: useCaseConfig[currentUseCase].name,
+                    description: useCaseConfig[currentUseCase].description
+                },
+                metrics: {
+                    globalAccuracy: globalAccuracy,
+                    localLoss: localLoss,
+                    activeNodes: activeNodes,
+                    totalNodes: totalNodes,
+                    tokenReward: tokenReward,
+                    reputationScore: reputationScore,
+                    currentRound: flRound
+                },
+                liveData: {
+                    temperature: liveData.temp,
+                    vibration: liveData.vib,
+                    heartRate: liveData.hr
+                },
+                convergenceData: convergenceData,
+                exportTimestamp: new Date().toISOString()
+            };
+            
+            return JSON.stringify(data, null, 2);
+        }
+
+        function generateTXTData() {
+            let text = 'FEDERATED LEARNING COMMAND CENTER - DATA EXPORT\n';
+            text += '=================================================\n\n';
+            text += `Export Date: ${new Date().toLocaleString()}\n\n`;
+            text += `USE CASE: ${useCaseConfig[currentUseCase].name}\n`;
+            text += `Description: ${useCaseConfig[currentUseCase].description}\n\n`;
+            text += 'CURRENT METRICS:\n';
+            text += `  Global Model Accuracy: ${globalAccuracy.toFixed(1)}%\n`;
+            text += `  Local Loss: ${localLoss.toFixed(3)}\n`;
+            text += `  Active Nodes: ${activeNodes} / ${totalNodes}\n`;
+            text += `  Token Reward: ${tokenReward.toFixed(2)} TKN\n`;
+            text += `  Reputation Score: ${reputationScore}/100\n`;
+            text += `  Current Round: ${flRound}\n\n`;
+            text += 'LIVE SENSOR DATA:\n';
+            text += `  Temperature: ${liveData.temp.toFixed(1)}°C\n`;
+            text += `  Vibration: ${liveData.vib.toFixed(1)}mm/s\n`;
+            text += `  Heart Rate: ${liveData.hr.toFixed(0)}bpm\n\n`;
+            text += 'CONVERGENCE HISTORY:\n';
+            text += '  Round | Accuracy\n';
+            text += '  ----- | --------\n';
+            convergenceData.forEach(point => {
+                text += `  ${point.round.toString().padEnd(5)} | ${point.accuracy.toFixed(1)}%\n`;
+            });
+            
+            return text;
+        }
+
+        // --- Simulation Loop ---
+        function simulationLoop() {
+            // 1. Live Data Simulation Jitter
+            liveData.temp = Math.min(100, Math.max(10, liveData.temp + (Math.random() * 5 - 2.5)));
+            liveData.vib = Math.min(50, Math.max(0, liveData.vib + (Math.random() * 3 - 1.5)));
+            liveData.hr = Math.min(180, Math.max(40, liveData.hr + (Math.random() * 10 - 5)));
+            renderLiveDataFeed();
+
+            // 2. FL Round Simulation
+            if (flRound % 5 === 0) {
+                // Simulate Global Aggregation
+                globalAccuracy += Math.random() * 0.5 + 0.1; 
+                globalAccuracy = Math.min(95.0, globalAccuracy); 
+                flRound++;
+
+                // Update convergence data
+                convergenceData.push({ round: flRound, accuracy: globalAccuracy });
+                if (convergenceData.length > maxConvergencePoints) {
+                    convergenceData.shift();
+                }
+
+                // Flash Aggregator Node to show update
+                const aggregator = document.getElementById('aggregator-node');
+                aggregator.classList.add('flash-green'); // Use class for animation
+                updateBlockchainLog("Model Update Verified");
+                setTimeout(() => aggregator.classList.remove('flash-green'), 300);
+
+            } else {
+                flRound++;
+            }
+
+            // 3. Other Metric Jitter
+            activeNodes = 5 + Math.floor(Math.random() * 6); 
+            localLoss += (Math.random() * 0.05 - 0.025); 
+            localLoss = Math.max(0.1, localLoss);
+            
+            renderMetrics();
+            renderConvergenceChart();
+
+            // 4. Update Blockchain Log with generic activity
+            if (Math.random() < 0.3) {
+                updateBlockchainLog("Client Signed Block");
+            }
+        }
+
+        // --- Initialization and Event Listeners ---
+
+        function setupUI() {
+            // 1. Render Use Case Tabs
+            const tabsContainer = document.getElementById('use-case-tabs');
+            Object.keys(useCaseConfig).forEach(key => {
+                const config = useCaseConfig[key];
+                const button = document.createElement('button');
+                button.id = `tab-${key}`;
+                button.className = `p-3 rounded-xl transition-all text-left font-semibold flex items-center space-x-3 ${config.color}`; /* Initial color class */
+                button.innerHTML = `<i class="${config.icon} text-xl transition-colors"></i><span>${config.name}</span>`;
+                button.onclick = () => switchUseCase(key);
+                tabsContainer.appendChild(button);
+            });
+            switchUseCase('PM'); // Initialize to PM
+
+            // 2. Setup Modals
+            document.getElementById('contribute-data-btn').addEventListener('click', () => openModal('contribution-modal'));
+            document.getElementById('close-modal-btn').addEventListener('click', () => closeModal('contribution-modal'));
+            document.getElementById('download-data-btn').addEventListener('click', () => openModal('download-modal'));
+
+            // 3. Setup Tooltip Listeners
+            document.getElementById('tooltip-acc').addEventListener('click', () => showTooltip('acc'));
+            document.getElementById('tooltip-loss').addEventListener('click', () => showTooltip('loss'));
+            document.getElementById('tooltip-nodes').addEventListener('click', () => showTooltip('nodes'));
+
+            // 4. Setup Contribution Modal Sliders
+            const tempSlider = document.getElementById('temp-slider');
+            const vibSlider = document.getElementById('vib-slider');
+            const hrSlider = document.getElementById('hr-slider');
+            const tempValue = document.getElementById('temp-value');
+            const vibValue = document.getElementById('vib-value');
+            const hrValue = document.getElementById('hr-value');
+
+            tempSlider.addEventListener('input', () => tempValue.textContent = tempSlider.value);
+            vibSlider.addEventListener('input', () => vibValue.textContent = vibSlider.value);
+            hrSlider.addEventListener('input', () => hrValue.textContent = hrSlider.value);
+
+            document.getElementById('submit-contribution-btn').addEventListener('click', () => {
+                handleContribution(
+                    parseInt(tempSlider.value),
+                    parseInt(vibSlider.value),
+                    parseInt(hrSlider.value)
+                );
+            });
+
+            // 5. Initial Rendering
+            renderNetworkGraph();
+            renderMetrics();
+            renderConvergenceChart();
+            renderLiveDataFeed();
+
+            // 6. Start Simulation
+            setInterval(simulationLoop, 1500);
+        }
+
+        window.onload = setupUI;
+    </script>
+</body>
+</html>
